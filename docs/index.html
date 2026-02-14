@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Love Spinner · 双人作答 & 协商答案</title>
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --panel:#11151b;
+      --card:#0f1319;
+      --line:rgba(255,255,255,.10);
+      --text:#e8eef7;
+      --muted:rgba(232,238,247,.70);
+      --accent:#7c5cff;
+      --ok:#34c759;
+      --warn:#ff9f0a;
+      --bad:#ff3b30;
+      --radius:18px;
+      --shadow:0 20px 70px rgba(0,0,0,.45);
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(124,92,255,.18), transparent 60%),
+        radial-gradient(900px 500px at 80% 0%, rgba(52,199,89,.10), transparent 60%),
+        radial-gradient(1000px 700px at 50% 100%, rgba(255,159,10,.12), transparent 60%),
+        linear-gradient(180deg, #07080a 0%, #0b0d10 40%, #090b0e 100%);
+    }
+    a{color:inherit}
+    .wrap{max-width:1120px;margin:0 auto;padding:28px 18px 60px}
+    header{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
+      padding:20px 20px 14px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(17,21,27,.70);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+    .title h1{margin:0;font-size:20px;letter-spacing:.2px}
+    .title p{margin:6px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end}
+    .chip{border:1px solid var(--line);background:rgba(255,255,255,.04);padding:6px 10px;border-radius:999px;font-size:12px;color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns: 1.15fr .85fr;gap:14px;margin-top:14px}
+    @media(max-width: 980px){.grid{grid-template-columns:1fr;}}
+
+    .panel{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:rgba(17,21,27,.55);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel-h{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:14px 16px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    }
+    .panel-h .h{font-weight:700;font-size:13px;letter-spacing:.4px;text-transform:uppercase;color:rgba(232,238,247,.78)}
+    .panel-b{padding:16px}
+
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .row > *{flex:0 0 auto}
+
+    select,input,textarea,button{
+      font-family:inherit;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      outline:none;
+    }
+    textarea{width:100%;min-height:92px;resize:vertical;line-height:1.5}
+    select,input{font-size:13px}
+    button{cursor:pointer;font-weight:650}
+    button.primary{background:rgba(124,92,255,.22);border-color:rgba(124,92,255,.35)}
+    button.ghost{background:transparent}
+    button:disabled{opacity:.5;cursor:not-allowed}
+
+    .question{
+      border:1px solid var(--line);
+      background:rgba(15,19,25,.65);
+      border-radius:16px;
+      padding:16px;
+    }
+    .q-top{display:flex;gap:10px;justify-content:space-between;align-items:flex-start}
+    .q-topic{font-size:12px;color:rgba(232,238,247,.74);text-transform:uppercase;letter-spacing:.7px}
+    .q-title{margin:6px 0 0;font-size:18px;line-height:1.25}
+    .q-id{font-family:var(--mono);font-size:11px;color:rgba(232,238,247,.55)}
+
+    .options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    @media(max-width:560px){.options{grid-template-columns:1fr}}
+    .opt{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+      text-align:left;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+    }
+    .opt:hover{transform: translateY(-1px);border-color:rgba(124,92,255,.45);background:rgba(124,92,255,.08)}
+    .opt b{font-family:var(--mono);font-size:12px;margin-right:8px;color:rgba(232,238,247,.72)}
+    .opt span{font-size:14px;line-height:1.35}
+
+    .answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+    @media(max-width:880px){.answers{grid-template-columns:1fr}}
+    .card{
+      border:1px solid var(--line);
+      background:rgba(15,19,25,.55);
+      border-radius:16px;
+      padding:14px;
+    }
+    .card h3{margin:0 0 10px;font-size:13px;letter-spacing:.3px;text-transform:uppercase;color:rgba(232,238,247,.78)}
+    .pick{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      width:38px;height:38px;border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      font-family:var(--mono);
+      font-weight:800;
+    }
+    .btn.active{border-color:rgba(124,92,255,.6);background:rgba(124,92,255,.18)}
+
+    .diff{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px dashed rgba(255,255,255,.16);
+      color:rgba(232,238,247,.78);
+      font-size:13px;
+      line-height:1.45;
+    }
+    .diff.ok{border-color: rgba(52,199,89,.40);background: rgba(52,199,89,.08)}
+    .diff.warn{border-color: rgba(255,159,10,.45);background: rgba(255,159,10,.08)}
+    .diff.bad{border-color: rgba(255,59,48,.45);background: rgba(255,59,48,.08)}
+
+    .follow{margin-top:12px;padding:12px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.02)}
+    .follow h4{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:rgba(232,238,247,.72)}
+    .follow ul{margin:0;padding-left:18px;color:rgba(232,238,247,.78)}
+    .follow li{margin:6px 0;line-height:1.45}
+
+    .footer-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+
+    .mini{font-size:12px;color:var(--muted);line-height:1.5}
+    .kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--line);padding:2px 6px;border-radius:8px;color:rgba(232,238,247,.72)}
+
+    .history{display:flex;flex-direction:column;gap:10px}
+    .hitem{border:1px solid var(--line);background:rgba(15,19,25,.55);border-radius:16px;padding:12px}
+    .hitem .ht{font-size:13px;font-weight:700}
+    .hitem .hm{margin-top:6px;color:rgba(232,238,247,.78);font-size:12px;line-height:1.5}
+    .hitem .hm code{font-family:var(--mono);font-size:11px;color:rgba(232,238,247,.85)}
+
+    .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      background:rgba(17,21,27,.92);border:1px solid var(--line);padding:10px 12px;border-radius:14px;
+      color:rgba(232,238,247,.88);font-size:13px;box-shadow: var(--shadow);opacity:0;pointer-events:none;transition:opacity .16s ease}
+    .toast.show{opacity:1}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Love Spinner</h1>
+        <p>双人盲选作答 → 再聊一聊 → 最后选一个「协商后的我们答案」。本地保存，不上传。</p>
+      </div>
+      <div class="chips">
+        <span class="chip">模式：盲选</span>
+        <span class="chip">导出：JSON / Markdown</span>
+        <span class="chip">快捷键：<span class="kbd">N</span> 下一题</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="panel-h">
+          <div class="h">Practice</div>
+          <div class="row">
+            <select id="topicSel"></select>
+            <button id="spinBtn" class="primary">转一下</button>
+            <button id="nextBtn" class="ghost">下一题</button>
+          </div>
+        </div>
+        <div class="panel-b">
+          <div class="question">
+            <div class="q-top">
+              <div>
+                <div class="q-topic" id="qTopic">—</div>
+                <div class="q-title" id="qText">加载题库中…</div>
+              </div>
+              <div class="q-id" id="qId">—</div>
+            </div>
+
+            <div class="options" id="opts"></div>
+
+            <div class="answers">
+              <div class="card">
+                <h3>男生 / 我</h3>
+                <div class="pick" id="pickA"></div>
+              </div>
+              <div class="card">
+                <h3>女生 / TA</h3>
+                <div class="pick" id="pickB"></div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:10px">
+              <h3>协商后的我们答案</h3>
+              <div class="pick" id="pickN"></div>
+              <div class="diff" id="diffBox" style="margin-top:10px">提示：两人都选完才会揭晓差异。</div>
+            </div>
+
+            <div class="follow">
+              <h4>聊一聊（追问）</h4>
+              <ul id="followUps"></ul>
+              <div style="margin-top:10px">
+                <textarea id="notes" placeholder="你们聊到的关键点（可选，会随导出一起保存）..."></textarea>
+              </div>
+              <div class="footer-actions">
+                <button id="saveBtn" class="primary">✅ 记录这一题</button>
+                <button id="resetBtn" class="ghost">清空本地记录</button>
+              </div>
+              <div class="mini" style="margin-top:10px">记录会保存到浏览器本地（localStorage）。你可以随时导出结果给自己复盘，或发给对方对齐。</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="panel-h">
+          <div class="h">Setup / Tips</div>
+          <div class="row">
+            <button id="exportJsonBtn" class="primary">导出 JSON</button>
+            <button id="exportMdBtn" class="ghost">导出 Markdown</button>
+          </div>
+        </div>
+        <div class="panel-b">
+          <div class="mini">
+            <b>怎么玩：</b>先各自选答案（盲选），再聊一聊，最后选一个“我们答案”。
+            <br><br>
+            <b>导出包含：</b>每题的 A/B/N 选择 + 备注。
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="history" id="history"></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+<script>
+  const BANK_URL = '../question_bank_v0.json';
+  const LS_KEY = 'love_spinner_v1_session';
+
+  const el = (id)=>document.getElementById(id);
+  const topicSel = el('topicSel');
+  const spinBtn = el('spinBtn');
+  const nextBtn = el('nextBtn');
+
+  const qTopic = el('qTopic');
+  const qText = el('qText');
+  const qId = el('qId');
+  const opts = el('opts');
+
+  const pickA = el('pickA');
+  const pickB = el('pickB');
+  const pickN = el('pickN');
+  const diffBox = el('diffBox');
+  const followUpsEl = el('followUps');
+  const notesEl = el('notes');
+  const saveBtn = el('saveBtn');
+  const resetBtn = el('resetBtn');
+  const exportJsonBtn = el('exportJsonBtn');
+  const exportMdBtn = el('exportMdBtn');
+  const historyEl = el('history');
+  const toastEl = el('toast');
+
+  let bank = [];
+  let current = null;
+  let picks = { a: null, b: null, n: null };
+  let revealed = false;
+
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    setTimeout(()=>toastEl.classList.remove('show'), 1200);
+  }
+
+  function loadSession(){
+    try{ return JSON.parse(localStorage.getItem(LS_KEY) || '{"items":[]}'); }
+    catch{ return {items:[]}; }
+  }
+  function saveSession(sess){
+    localStorage.setItem(LS_KEY, JSON.stringify(sess));
+  }
+
+  function topics(){
+    const t = new Set(bank.map(q=>q.topic));
+    return ['全主题混抽', ...Array.from(t)];
+  }
+
+  function setTopicOptions(){
+    topicSel.innerHTML = topics().map(t=>`<option value="${t}">${t}</option>`).join('');
+  }
+
+  function filteredQuestions(){
+    const t = topicSel.value;
+    if(!t || t==='全主题混抽') return bank;
+    return bank.filter(q=>q.topic===t);
+  }
+
+  function letter(i){
+    return ['A','B','C','D','E'][i] || String(i+1);
+  }
+
+  function renderOptions(){
+    opts.innerHTML = '';
+    const options = current?.options || [];
+    options.slice(0,5).forEach((txt, i)=>{
+      const L = letter(i);
+      const btn = document.createElement('button');
+      btn.className = 'opt';
+      btn.type = 'button';
+      btn.innerHTML = `<b>${L}</b><span>${escapeHtml(txt)}</span>`;
+      btn.onclick = ()=>{ /* no-op (options are informational) */ };
+      opts.appendChild(btn);
+    });
+
+    // also render pick buttons
+    const mkPick = (container, key)=>{
+      container.innerHTML = '';
+      options.slice(0,5).forEach((_, i)=>{
+        const L = letter(i);
+        const b = document.createElement('button');
+        b.className = 'btn' + (picks[key]===L ? ' active':'');
+        b.type='button';
+        b.textContent = L;
+        b.onclick = ()=>{ picks[key]=L; revealed=false; renderPicks(); updateDiff(); };
+        container.appendChild(b);
+      });
+    }
+    mkPick(pickA,'a');
+    mkPick(pickB,'b');
+    mkPick(pickN,'n');
+  }
+
+  function renderPicks(){
+    // refresh active classes
+    [...pickA.querySelectorAll('.btn')].forEach(b=>b.classList.toggle('active', b.textContent===picks.a));
+    [...pickB.querySelectorAll('.btn')].forEach(b=>b.classList.toggle('active', b.textContent===picks.b));
+    [...pickN.querySelectorAll('.btn')].forEach(b=>b.classList.toggle('active', b.textContent===picks.n));
+  }
+
+  function renderFollowUps(){
+    const list = current?.followUps || [];
+    followUpsEl.innerHTML = list.map(x=>`<li>${escapeHtml(x)}</li>`).join('') || '<li>（这题没有追问，你们可以自由发挥）</li>';
+  }
+
+  function updateDiff(){
+    const a=picks.a, b=picks.b;
+    if(!a || !b){
+      diffBox.className='diff';
+      diffBox.textContent = '提示：两人都选完才会揭晓差异。';
+      return;
+    }
+    // reveal
+    if(!revealed) revealed = true;
+    const same = a===b;
+    if(same){
+      diffBox.className='diff ok';
+      diffBox.textContent = `一致：你们都选了 ${a}。可以直接进入“我们答案”或聊聊为什么一致。`;
+      return;
+    }
+    // distance heuristic
+    const idx = (L)=>({A:0,B:1,C:2,D:3,E:4}[L] ?? 0);
+    const d = Math.abs(idx(a)-idx(b));
+    if(d<=1){
+      diffBox.className='diff warn';
+      diffBox.textContent = `接近但不同：男生/我=${a}，女生/TA=${b}。建议用追问把“边界/频率/阈值”聊具体。`;
+    } else {
+      diffBox.className='diff bad';
+      diffBox.textContent = `分歧较大：男生/我=${a}，女生/TA=${b}。建议先对齐“各自最在意的底层需求”，再协商一个“我们答案”。`;
+    }
+  }
+
+  function setQuestion(q){
+    current = q;
+    picks = { a:null, b:null, n:null };
+    revealed = false;
+    notesEl.value='';
+
+    qTopic.textContent = q.topic || '—';
+    qText.textContent = q.text || '—';
+    qId.textContent = q.id || '—';
+
+    renderOptions();
+    renderFollowUps();
+    updateDiff();
+  }
+
+  function randomQuestion(){
+    const list = filteredQuestions();
+    if(!list.length) return null;
+    const q = list[Math.floor(Math.random()*list.length)];
+    return q;
+  }
+
+  function nextQuestion(){
+    const list = filteredQuestions();
+    if(!list.length) return null;
+    // avoid immediate repetition
+    let q = randomQuestion();
+    if(current && list.length>1){
+      let tries=0;
+      while(q.id===current.id && tries<10){ q = randomQuestion(); tries++; }
+    }
+    return q;
+  }
+
+  function escapeHtml(s){
+    return String(s||'')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+
+  function renderHistory(){
+    const sess = loadSession();
+    const items = sess.items || [];
+    if(!items.length){
+      historyEl.innerHTML = '<div class="mini">还没有记录。你可以先转一个题，聊完点“记录这一题”。</div>';
+      return;
+    }
+    historyEl.innerHTML = items.slice().reverse().map((it, idx)=>{
+      return `
+        <div class="hitem">
+          <div class="ht">${escapeHtml(it.topic)} · ${escapeHtml(it.text)}</div>
+          <div class="hm">
+            我：<code>${escapeHtml(it.male||'')}</code> · TA：<code>${escapeHtml(it.female||'')}</code> · 我们：<code>${escapeHtml(it.negotiated||'')}</code>
+            ${it.notes ? `<div style="margin-top:6px;color:rgba(232,238,247,.70)">${escapeHtml(it.notes)}</div>`:''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function recordCurrent(){
+    if(!current) return;
+    if(!picks.a || !picks.b){
+      toast('先让两个人都选完');
+      return;
+    }
+    if(!picks.n){
+      toast('再选一个“我们答案”');
+      return;
+    }
+    const sess = loadSession();
+    const items = sess.items || [];
+
+    const payload = {
+      qid: current.id,
+      topic: current.topic,
+      text: current.text,
+      male: picks.a,
+      female: picks.b,
+      negotiated: picks.n,
+      notes: notesEl.value.trim(),
+      ts: Date.now(),
+    };
+
+    // upsert by qid
+    const idx = items.findIndex(x=>x.qid===payload.qid);
+    if(idx>=0) items[idx]=payload; else items.push(payload);
+    sess.items = items;
+    saveSession(sess);
+    toast('已记录');
+    renderHistory();
+  }
+
+  function clearAll(){
+    if(!confirm('确定清空本地记录？（只会清掉浏览器里的存储）')) return;
+    localStorage.removeItem(LS_KEY);
+    toast('已清空');
+    renderHistory();
+  }
+
+  function download(filename, text, mime){
+    const blob = new Blob([text], {type: mime||'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 800);
+  }
+
+  function exportJSON(){
+    const sess = loadSession();
+    const out = {
+      version: 'love-spinner-v1',
+      exportedAt: new Date().toISOString(),
+      items: sess.items || []
+    };
+    download(`love-spinner_${new Date().toISOString().slice(0,10)}.json`, JSON.stringify(out, null, 2), 'application/json');
+  }
+
+  function exportMarkdown(){
+    const sess = loadSession();
+    const items = sess.items || [];
+    const lines = [];
+    lines.push(`# Love Spinner 导出`);
+    lines.push('');
+    lines.push(`- exportedAt: ${new Date().toISOString()}`);
+    lines.push(`- count: ${items.length}`);
+    lines.push('');
+
+    items.forEach((it, i)=>{
+      lines.push(`## ${i+1}. ${it.topic}｜${it.text}`);
+      lines.push('');
+      lines.push(`- 我：${it.male}`);
+      lines.push(`- TA：${it.female}`);
+      lines.push(`- 我们：${it.negotiated}`);
+      if(it.notes){
+        lines.push('');
+        lines.push(`**备注**：`);
+        lines.push('');
+        lines.push(it.notes);
+      }
+      lines.push('');
+    });
+
+    download(`love-spinner_${new Date().toISOString().slice(0,10)}.md`, lines.join('\n'), 'text/markdown');
+  }
+
+  async function init(){
+    const r = await fetch(BANK_URL, { cache: 'no-store' });
+    bank = await r.json();
+    setTopicOptions();
+    setQuestion(nextQuestion());
+    renderHistory();
+  }
+
+  spinBtn.onclick = ()=>{ setQuestion(nextQuestion()); };
+  nextBtn.onclick = ()=>{ setQuestion(nextQuestion()); };
+  saveBtn.onclick = recordCurrent;
+  resetBtn.onclick = clearAll;
+  exportJsonBtn.onclick = exportJSON;
+  exportMdBtn.onclick = exportMarkdown;
+
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='n' || e.key==='N'){ setQuestion(nextQuestion()); }
+  });
+
+  init().catch(err=>{
+    qText.textContent = '题库加载失败，请稍后再试。';
+    console.error(err);
+  });
+</script>
+</body>
+</html>
