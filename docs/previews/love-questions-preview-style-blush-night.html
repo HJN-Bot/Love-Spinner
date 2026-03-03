@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Love Questions · Preview (Blush Night)</title>
+  <style>
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    :root{
+      --bg0:#0b0a0d;
+      --bg1:#171019;
+      --text:#fff7f5;
+      --muted: rgba(255,247,245,0.72);
+      --muted2: rgba(255,247,245,0.56);
+      --rose:#ff7aa2;
+      --rose2:#ffd1bf;
+      --cocoa:#c89c8a;
+      --card: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.14);
+      --radius: 22px;
+      --pad: clamp(18px, 4vw, 56px);
+      --h2: clamp(1.1rem, 3vw, 1.9rem);
+      --body: clamp(0.95rem, 1.7vw, 1.15rem);
+      --small: clamp(0.78rem, 1.2vw, 0.95rem);
+      --gap: clamp(10px, 2vw, 18px);
+    }
+    body{
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 12% 12%, rgba(255,122,162,0.20), transparent 60%),
+        radial-gradient(900px 650px at 86% 18%, rgba(255,209,191,0.16), transparent 62%),
+        radial-gradient(900px 650px at 55% 96%, rgba(200,156,138,0.12), transparent 64%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+    }
+    .grain{position:absolute;inset:0;pointer-events:none;opacity:0.10;mix-blend-mode:overlay;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/></filter><rect width="180" height="180" filter="url(%23n)" opacity="0.5"/></svg>');}
+    .slide{height:100vh;height:100dvh;width:100vw;display:none;overflow:hidden;position:relative;}
+    .slide.active{display:block;}
+    .content{height:100%;padding:var(--pad);display:grid;grid-template-rows:auto 1fr auto;gap:var(--gap);position:relative;}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:var(--small);} 
+    .brand{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);backdrop-filter: blur(10px);} 
+    .heart{width:10px;height:10px;border-radius:99px;background:linear-gradient(135deg,var(--rose),var(--rose2));box-shadow:0 0 0 10px rgba(255,122,162,0.10);} 
+
+    .card{border-radius:var(--radius);background:linear-gradient(180deg,rgba(255,255,255,0.10),rgba(255,255,255,0.05));border:1px solid var(--border);box-shadow:0 18px 60px rgba(0,0,0,0.40);overflow:hidden;display:grid;grid-template-rows:auto 1fr;}
+    .cardHd{padding:18px 18px 14px;border-bottom:1px solid rgba(255,255,255,0.10);} 
+    .qTitle{margin:0;font-size:var(--h2);line-height:1.25;font-weight:900;letter-spacing:-0.01em;}
+    .hint{margin-top:10px;color:var(--muted2);font-size:var(--small);line-height:1.5;}
+    .cardBd{padding:16px 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;align-content:start;}
+    @media (max-width:760px){.cardBd{grid-template-columns:1fr;}}
+
+    .opt{padding:14px 14px;border-radius:18px;background:rgba(0,0,0,0.22);border:1px solid rgba(255,255,255,0.12);color:rgba(255,247,245,0.88);font-size:var(--body);line-height:1.35;display:flex;gap:12px;align-items:flex-start;}
+    .tag{width:22px;height:22px;border-radius:10px;background:rgba(255,122,162,0.16);border:1px solid rgba(255,122,162,0.22);display:flex;align-items:center;justify-content:center;color:rgba(255,247,245,0.90);font-size:12px;font-weight:900;}
+
+    .bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;color:var(--muted2);font-size:var(--small);} 
+    .kbd{padding:8px 10px;border-radius:14px;border:1px solid rgba(255,255,255,0.14);background:rgba(0,0,0,0.18);} 
+
+    .reveal{opacity:0;transform:translateY(10px);animation:in 680ms cubic-bezier(.2,.8,.2,1) forwards;}
+    .d2{animation-delay:120ms;} .d3{animation-delay:240ms;} .d4{animation-delay:360ms;}
+    @keyframes in{to{opacity:1;transform:translateY(0);}}
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <section class="slide active"><div class="grain"></div>
+      <div class="content">
+        <div class="top reveal"><div class="brand"><span class="heart"></span><span>Love Spinner · 预览（粉棕）</span></div><div>Blush Night · 3页预览</div></div>
+        <div class="card reveal d2"><div class="cardHd"><h2 class="qTitle">理想恋爱像哪种模式？（选一个最接近的）</h2><div class="hint">更夜色、更浪漫、更“心动”。</div></div>
+          <div class="cardBd">
+            <div class="opt reveal d3"><span class="tag">A</span><span>黏黏糊糊小章鱼</span></div>
+            <div class="opt reveal d3"><span class="tag">B</span><span>各忙各的但很稳</span></div>
+            <div class="opt reveal d4"><span class="tag">C</span><span>见面少但一见就很甜</span></div>
+            <div class="opt reveal d4"><span class="tag">D</span><span>随缘但不随便</span></div>
+          </div>
+        </div>
+        <div class="bottom reveal d3"><div>01 / 03 · 恋爱模式</div><div class="kbd">← / →</div></div>
+      </div>
+    </section>
+
+    <section class="slide"><div class="grain"></div>
+      <div class="content">
+        <div class="top reveal"><div class="brand"><span class="heart"></span><span>Love Spinner · 预览（粉棕）</span></div><div>Blush Night</div></div>
+        <div class="card reveal d2"><div class="cardHd"><h2 class="qTitle">你对‘异性朋友’的边界是：</h2><div class="hint">玻璃卡片 + 微光渐变，偏“氛围感”。</div></div>
+          <div class="cardBd">
+            <div class="opt reveal d3"><span class="tag">A</span><span>可以有，但要透明</span></div>
+            <div class="opt reveal d3"><span class="tag">B</span><span>可以有，但别单独深夜聊天</span></div>
+            <div class="opt reveal d4"><span class="tag">C</span><span>尽量少，省得麻烦</span></div>
+            <div class="opt reveal d4"><span class="tag">D</span><span>无所谓，我信任你</span></div>
+          </div>
+        </div>
+        <div class="bottom reveal d3"><div>02 / 03 · 边界</div><div class="kbd">← / →</div></div>
+      </div>
+    </section>
+
+    <section class="slide"><div class="grain"></div>
+      <div class="content">
+        <div class="top reveal"><div class="brand"><span class="heart"></span><span>Love Spinner · 预览（粉棕）</span></div><div>Blush Night</div></div>
+        <div class="card reveal d2"><div class="cardHd"><h2 class="qTitle">你希望我们“共同进步”的方式更像：</h2><div class="hint">“智性恋/慕强”对齐题。</div></div>
+          <div class="cardBd">
+            <div class="opt reveal d3"><span class="tag">A</span><span>一起做一个小项目（最甜）</span></div>
+            <div class="opt reveal d3"><span class="tag">B</span><span>彼此复盘互相提问（教练型）</span></div>
+            <div class="opt reveal d4"><span class="tag">C</span><span>资源互换/引荐机会（协作型）</span></div>
+            <div class="opt reveal d4"><span class="tag">D</span><span>各自成长但定期同步（松弛型）</span></div>
+          </div>
+        </div>
+        <div class="bottom reveal d3"><div>03 / 03 · 成长曲线</div><div class="kbd">← / →</div></div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const slides=[...document.querySelectorAll('.slide')];
+    let i=0;
+    function show(idx){
+      slides.forEach((s,k)=>s.classList.toggle('active',k===idx));
+      const active=slides[idx];
+      const clone=active.cloneNode(true);
+      active.replaceWith(clone);
+      slides[idx]=clone;
+    }
+    function next(){ if(i<slides.length-1){ i++; show(i);} }
+    function prev(){ if(i>0){ i--; show(i);} }
+    window.addEventListener('keydown',(e)=>{
+      if(['ArrowRight','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+      if(['ArrowLeft','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+    },{passive:false});
+    let sx=null,sy=null;
+    window.addEventListener('touchstart',(e)=>{const t=e.touches[0];sx=t.clientX;sy=t.clientY;},{passive:true});
+    window.addEventListener('touchend',(e)=>{if(sx===null) return; const t=e.changedTouches[0]; const dx=t.clientX-sx; const dy=t.clientY-sy; sx=sy=null; if(Math.abs(dx)>50 && Math.abs(dy)<80){ dx<0?next():prev(); }},{passive:true});
+  </script>
+</body>
+</html>
