@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Love Spinner · A/B作答 → 综合方案</title>
+  <title>Love Spinner · 选项表态 → 综合答案</title>
   <style>
     :root{
       --paper:#fbf3ef;
@@ -13,14 +13,14 @@
       --rose:#c67a86;
       --rose2:#e8b7a7;
       --latte:#b8927a;
-      --card: rgba(255,255,255,0.82);
+      --card: rgba(255,255,255,0.84);
       --border: rgba(36,28,25,0.10);
       --border2: rgba(36,28,25,0.14);
       --radius: 22px;
       --shadow: 0 18px 60px rgba(0,0,0,0.12);
       --pad: clamp(18px, 4vw, 46px);
       --h1: clamp(18px, 2.1vw, 22px);
-      --q: clamp(20px, 3.2vw, 34px);
+      --q: clamp(22px, 3.6vw, 38px);
       --body: clamp(0.98rem, 1.8vw, 1.15rem);
       --small: clamp(0.80rem, 1.2vw, 0.95rem);
       --gap: clamp(10px, 2vw, 16px);
@@ -37,15 +37,14 @@
         radial-gradient(900px 650px at 55% 92%, rgba(184,146,122,0.18), transparent 64%),
         linear-gradient(180deg, #fff, var(--paper));
     }
-    a{color:inherit}
-    .wrap{max-width:1080px;margin:0 auto;padding:24px 14px 60px}
+    .wrap{max-width:1120px;margin:0 auto;padding:24px 14px 60px}
 
     header{
       display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
       padding:16px 16px;
       border:1px solid var(--border);
       border-radius: var(--radius);
-      background: rgba(255,255,255,0.65);
+      background: rgba(255,255,255,0.68);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
     }
@@ -60,78 +59,56 @@
       font-family:inherit;
       border-radius:14px;
       border:1px solid var(--border2);
-      background: rgba(255,255,255,0.70);
+      background: rgba(255,255,255,0.74);
       color: var(--ink);
       padding:10px 12px;
       outline:none;
     }
     select,input{font-size:13px}
-    button{cursor:pointer;font-weight:800;letter-spacing:0.1px}
+    button{cursor:pointer;font-weight:850;letter-spacing:0.1px}
     button.primary{background: rgba(198,122,134,0.14); border-color: rgba(198,122,134,0.24)}
     button.ghost{background: transparent}
     button:disabled{opacity:0.55;cursor:not-allowed}
 
-    .progressWrap{width:min(340px, 64vw)}
+    .progressWrap{width:min(380px, 70vw)}
     .progressTop{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:12px}
-    .bar{height:10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.50);overflow:hidden}
-    .fill{height:100%;width:0%;background:linear-gradient(90deg, rgba(198,122,134,0.55), rgba(232,183,167,0.65));}
+    .bar{height:10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.55);overflow:hidden}
+    .fill{height:100%;width:0%;background:linear-gradient(90deg, rgba(198,122,134,0.58), rgba(232,183,167,0.70));}
 
-    .panel{
-      margin-top: 14px;
-      border:1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-    }
-    .panelH{
-      padding:14px 16px;
-      border-bottom: 1px solid rgba(36,28,25,0.08);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    }
+    .panel{ margin-top:14px; border:1px solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); overflow:hidden; }
+    .panelH{ padding:14px 16px; border-bottom: 1px solid rgba(36,28,25,0.08); display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap; }
     .panelH .left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.55);font-size:12px;color:var(--muted)}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.60);font-size:12px;color:var(--muted)}
     .panelB{padding:16px}
 
-    .q{
-      text-align:center;
-      font-size: var(--q);
-      font-weight: 950;
-      line-height: 1.25;
-      letter-spacing:-0.01em;
-      margin: 10px 0 0;
-    }
+    .q{ text-align:center; font-size: var(--q); font-weight: 980; line-height: 1.2; letter-spacing:-0.012em; margin: 10px 0 0; }
     .qMeta{margin-top:10px;color:var(--muted2);font-size:var(--small)}
 
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;align-items:start}
-    @media(max-width: 880px){.grid{grid-template-columns:1fr}}
-
-    .card{
-      border:1px solid rgba(36,28,25,0.10);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.72);
-      padding: 12px;
-    }
-    .cardTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .opts{margin-top:14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+    @media(max-width:900px){.opts{grid-template-columns:1fr}}
+    .optBox{border:1px solid rgba(36,28,25,0.10);border-radius:18px;background:rgba(255,255,255,0.76);padding:12px}
+    .optTop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
     .tag{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:12px;background:rgba(198,122,134,0.14);border:1px solid rgba(198,122,134,0.22);font-weight:950;color:rgba(36,28,25,0.76)}
-    .who{font-weight:900;color:rgba(36,28,25,0.86)}
+    .optBox textarea{min-height:72px;font-size:var(--body);line-height:1.55}
 
-    textarea{width:100%;min-height:110px;resize:vertical;line-height:1.55;font-size:var(--body);background:rgba(255,255,255,0.76)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;align-items:start}
+    @media(max-width: 880px){.grid{grid-template-columns:1fr}}
+    .card{border:1px solid rgba(36,28,25,0.10);border-radius:18px;background:rgba(255,255,255,0.74);padding:12px}
+    .cardTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .who{font-weight:920;color:rgba(36,28,25,0.86)}
+    textarea{width:100%;min-height:110px;resize:vertical;line-height:1.55;font-size:var(--body);background:rgba(255,255,255,0.78)}
+
+    .pickRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .pickBtn{display:inline-flex;align-items:center;justify-content:center;min-width:44px;height:40px;border-radius:14px;border:1px solid rgba(36,28,25,0.12);background:rgba(255,255,255,0.70);font-weight:950}
+    .pickBtn.active{border-color:rgba(198,122,134,0.50);background:rgba(198,122,134,0.16)}
 
     .micBtn{display:inline-flex;align-items:center;gap:8px;font-size:12px;padding:8px 10px;border-radius:14px}
     .micDot{width:8px;height:8px;border-radius:99px;background:rgba(198,122,134,0.55)}
     .micBtn.recording{background:rgba(198,122,134,0.16);border-color:rgba(198,122,134,0.30)}
 
-    .summary{
-      margin-top: 12px;
-      border:1px solid rgba(36,28,25,0.10);
-      border-radius: 18px;
-      background: rgba(255,255,255,0.78);
-      padding: 12px;
-    }
+    .summary{ margin-top:12px; border:1px solid rgba(36,28,25,0.10); border-radius:18px; background:rgba(255,255,255,0.80); padding:12px; }
     .summary h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:rgba(36,28,25,0.70)}
     .summaryBox{white-space:pre-wrap;line-height:1.6;font-size:var(--body);color:rgba(36,28,25,0.88)}
-
     .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:12px}
 
     .toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
@@ -139,17 +116,23 @@
       color:rgba(36,28,25,0.88);font-size:13px;box-shadow: var(--shadow);opacity:0;pointer-events:none;transition:opacity .16s ease}
     .toast.show{opacity:1}
 
-    dialog{border:none;border-radius:20px;box-shadow: 0 30px 120px rgba(0,0,0,0.28);width:min(860px, 92vw);}
+    dialog{border:none;border-radius:20px;box-shadow: 0 30px 120px rgba(0,0,0,0.28);width:min(920px, 94vw);}
     dialog::backdrop{background: rgba(0,0,0,0.35)}
     .dlgH{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(36,28,25,0.10)}
-    .dlgT{font-weight:950}
+    .dlgT{font-weight:980}
     .dlgB{padding:14px 16px}
     .list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     @media(max-width:860px){.list{grid-template-columns:1fr}}
-    .item{border:1px solid rgba(36,28,25,0.10);border-radius:16px;background:rgba(255,255,255,0.70);padding:12px}
-    .item .t{font-weight:900}
+    .item{border:1px solid rgba(36,28,25,0.10);border-radius:16px;background:rgba(255,255,255,0.74);padding:12px;cursor:pointer}
+    .item .t{font-weight:920}
     .item .m{margin-top:6px;color:var(--muted);font-size:12px;line-height:1.5}
     .item .badge{display:inline-block;margin-left:8px;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);color:var(--muted)}
+
+    .form{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:860px){.form{grid-template-columns:1fr}}
+    .field{border:1px solid rgba(36,28,25,0.10);border-radius:16px;background:rgba(255,255,255,0.74);padding:12px}
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .field input{width:100%}
   </style>
 </head>
 <body>
@@ -158,14 +141,16 @@
       <div>
         <div class="brand"><span class="heart"></span><div>
           <h1>Love Spinner</h1>
-          <div class="sub">A / B 分别作答（打字或语音）→ 自动生成「综合方案」→ 保存 → 下一题。全程本地保存，不上传。</div>
+          <div class="sub">先用 3 个选项快速表态（3-2-1）→ 再补充文字/语音 → 形成「综合答案」→ 保存 → 下一题。全程本地保存，不上传。</div>
         </div></div>
       </div>
       <div class="topRight">
         <div class="row">
           <select id="topicSel"></select>
-          <button id="spinBtn" class="primary">转一下</button>
+          <button id="spinBtn" class="primary">开一轮</button>
+          <button id="setupBtn" class="ghost">入口/信息</button>
           <button id="overviewBtn" class="ghost">总览</button>
+          <button id="exportMdBtn" class="primary">导出 MD</button>
         </div>
         <div class="progressWrap">
           <div class="progressTop"><span id="progressText">0 / 0</span><span id="topicText">—</span></div>
@@ -179,6 +164,7 @@
         <div class="left">
           <span class="pill" id="qid">—</span>
           <span class="pill" id="qindex">—</span>
+          <span class="pill" id="sessionPill">未设置填报信息</span>
         </div>
         <div class="row">
           <button id="prevBtn" class="ghost">上一题</button>
@@ -189,45 +175,96 @@
         <div class="q" id="qText">加载题库中…</div>
         <div class="qMeta" id="qHint">—</div>
 
+        <div class="opts">
+          <div class="optBox">
+            <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">A</span><b>选项 A</b></div></div>
+            <textarea id="optA" placeholder="填你们的选项A（一句话即可）"></textarea>
+          </div>
+          <div class="optBox">
+            <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">B</span><b>选项 B</b></div></div>
+            <textarea id="optB" placeholder="填你们的选项B（一句话即可）"></textarea>
+          </div>
+          <div class="optBox">
+            <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">C</span><b>选项 C</b></div></div>
+            <textarea id="optC" placeholder="填你们的选项C（一句话即可）"></textarea>
+          </div>
+        </div>
+
         <div class="grid">
           <div class="card">
             <div class="cardTitle">
-              <div style="display:flex;align-items:center;gap:10px"><span class="tag">A</span><span class="who">我的视角</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="tag">我</span><span class="who" id="nameA">我的视角</span></div>
               <button class="micBtn" id="micA" type="button"><span class="micDot"></span><span>语音输入</span></button>
             </div>
-            <textarea id="ansA" placeholder="你怎么看？可以写要点/底线/担心/期待…"></textarea>
+            <div class="pickRow" id="pickA"></div>
+            <div style="margin-top:8px"><textarea id="ansA" placeholder="补充说明：原因/底线/担心/期待…（可选）"></textarea></div>
           </div>
 
           <div class="card">
             <div class="cardTitle">
-              <div style="display:flex;align-items:center;gap:10px"><span class="tag">B</span><span class="who">对方视角</span></div>
+              <div style="display:flex;align-items:center;gap:10px"><span class="tag">TA</span><span class="who" id="nameB">对方视角</span></div>
               <button class="micBtn" id="micB" type="button"><span class="micDot"></span><span>语音输入</span></button>
             </div>
-            <textarea id="ansB" placeholder="你猜对方怎么看？或把对方原话贴进来…"></textarea>
+            <div class="pickRow" id="pickB"></div>
+            <div style="margin-top:8px"><textarea id="ansB" placeholder="补充说明：对方可能在意什么/底层需求是什么…（可选）"></textarea></div>
           </div>
         </div>
 
         <div class="summary">
-          <h3>综合方案（A + B）</h3>
-          <div class="summaryBox" id="summaryBox">（还没有生成。先写 A / B，再点“生成综合方案”。）</div>
+          <h3>综合答案（我们最终版）</h3>
+          <div class="summaryBox" id="summaryBox">（建议：先 3-2-1 表态选 A/B/C，再补充几句，然后再生成综合答案。）</div>
           <div class="actions">
-            <button id="genBtn" class="ghost">生成综合方案</button>
-            <button id="saveBtn" class="primary">保存</button>
+            <button id="genBtn" class="ghost">生成综合答案</button>
+            <button id="saveBtn" class="primary">保存这一题</button>
           </div>
         </div>
       </div>
     </section>
   </div>
 
+  <dialog id="setupDlg">
+    <div class="dlgH">
+      <div class="dlgT">入口 / 填报信息（仪式感）</div>
+      <button id="closeSetup" class="ghost">关闭</button>
+    </div>
+    <div class="dlgB">
+      <div class="form">
+        <div class="field">
+          <label>填报人（我）</label>
+          <input id="whoA" placeholder="比如：Jianan" />
+        </div>
+        <div class="field">
+          <label>对方（TA）</label>
+          <input id="whoB" placeholder="比如：男嘉宾" />
+        </div>
+        <div class="field">
+          <label>填写日期</label>
+          <input id="sessDate" type="date" />
+        </div>
+        <div class="field">
+          <label>本轮主题（可选）</label>
+          <input id="sessTitle" placeholder="比如：恋爱边界对齐 / 旅行前对齐" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top:12px">
+        <button id="saveSetup" class="primary">保存信息</button>
+        <button id="clearAll" class="ghost">清空全部记录</button>
+      </div>
+      <div style="margin-top:12px;color:var(--muted);font-size:12px;line-height:1.5">
+        说明：所有记录仅保存在你的浏览器本地（localStorage）。
+      </div>
+    </div>
+  </dialog>
+
   <dialog id="overviewDlg">
     <div class="dlgH">
-      <div class="dlgT">本轮总览</div>
+      <div class="dlgT">本轮总览（模块/进度）</div>
       <button id="closeOverview" class="ghost">关闭</button>
     </div>
     <div class="dlgB">
       <div class="list" id="overviewList"></div>
       <div style="margin-top:12px;color:var(--muted);font-size:12px;line-height:1.5">
-        提示：总览用于获得“进度感”。点击某一条会跳转到对应题目。
+        提示：点击某一条会跳转到对应题目；“已保存”= 你点过保存。
       </div>
     </div>
   </dialog>
@@ -236,7 +273,8 @@
 
 <script>
   const BANK_URL = '../question_bank_v0.json';
-  const LS_KEY = 'love_spinner_v2_ab_session';
+  const LS_KEY = 'love_spinner_v3_session';
+  const LS_META = 'love_spinner_v3_meta';
 
   const el = (id)=>document.getElementById(id);
   const topicSel = el('topicSel');
@@ -244,12 +282,25 @@
   const prevBtn = el('prevBtn');
   const nextBtn = el('nextBtn');
   const overviewBtn = el('overviewBtn');
+  const exportMdBtn = el('exportMdBtn');
+  const setupBtn = el('setupBtn');
 
   const qText = el('qText');
   const qHint = el('qHint');
   const qid = el('qid');
   const qindex = el('qindex');
   const topicText = el('topicText');
+  const sessionPill = el('sessionPill');
+
+  const optA = el('optA');
+  const optB = el('optB');
+  const optC = el('optC');
+
+  const nameAEl = el('nameA');
+  const nameBEl = el('nameB');
+
+  const pickAEl = el('pickA');
+  const pickBEl = el('pickB');
 
   const ansA = el('ansA');
   const ansB = el('ansB');
@@ -263,6 +314,15 @@
   const progressText = el('progressText');
   const progressFill = el('progressFill');
 
+  const setupDlg = el('setupDlg');
+  const closeSetup = el('closeSetup');
+  const saveSetupBtn = el('saveSetup');
+  const clearAllBtn = el('clearAll');
+  const whoA = el('whoA');
+  const whoB = el('whoB');
+  const sessDate = el('sessDate');
+  const sessTitle = el('sessTitle');
+
   const overviewDlg = el('overviewDlg');
   const overviewList = el('overviewList');
   const closeOverview = el('closeOverview');
@@ -273,6 +333,7 @@
   let list = [];
   let idx = 0;
   let current = null;
+  let picks = { a:null, b:null };
 
   function toast(msg){
     toastEl.textContent = msg;
@@ -284,8 +345,27 @@
     try{ return JSON.parse(localStorage.getItem(LS_KEY) || '{"items":{}}'); }
     catch{ return { items: {} }; }
   }
-  function saveSession(sess){
-    localStorage.setItem(LS_KEY, JSON.stringify(sess));
+  function saveSession(sess){ localStorage.setItem(LS_KEY, JSON.stringify(sess)); }
+
+  function loadMeta(){
+    try{ return JSON.parse(localStorage.getItem(LS_META) || '{}'); }
+    catch{ return {}; }
+  }
+  function saveMeta(m){ localStorage.setItem(LS_META, JSON.stringify(m)); }
+
+  function applyMeta(){
+    const m = loadMeta();
+    const a = m.whoA || '我';
+    const b = m.whoB || 'TA';
+    nameAEl.textContent = a;
+    nameBEl.textContent = b;
+    if(m.whoA || m.whoB || m.date){
+      const d = m.date ? ` · ${m.date}` : '';
+      const t = m.title ? ` · ${m.title}` : '';
+      sessionPill.textContent = `${a} / ${b}${d}${t}`;
+    } else {
+      sessionPill.textContent = '未设置填报信息';
+    }
   }
 
   function topics(){
@@ -313,13 +393,14 @@
 
   function buildList(){
     list = shuffle(filtered());
-    if(!list.length) list = [];
     idx = 0;
     setCurrent(list[0] || null);
   }
 
   function setCurrent(q){
     current = q;
+    picks = { a:null, b:null };
+
     if(!current){
       qText.textContent = '（题库为空）';
       qHint.textContent = '—';
@@ -334,14 +415,27 @@
     qindex.textContent = `${idx+1} / ${list.length}`;
 
     qText.textContent = current.text || '—';
-    qHint.textContent = current.hint || 'A / B 分别写下你们的想法，再生成综合方案。';
+    qHint.textContent = current.hint || '先写 3 个选项，再 3-2-1 表态，最后生成综合答案。';
+
+    // defaults: take first 3 options from bank if present
+    const defaults = Array.isArray(current.options) ? current.options.slice(0,3) : [];
 
     const sess = loadSession();
     const it = (sess.items || {})[current.id] || null;
-    ansA.value = it?.a || '';
-    ansB.value = it?.b || '';
-    summaryBox.textContent = it?.summary || '（还没有生成。先写 A / B，再点“生成综合方案”。）';
 
+    optA.value = it?.optA ?? (defaults[0] || '');
+    optB.value = it?.optB ?? (defaults[1] || '');
+    optC.value = it?.optC ?? (defaults[2] || '');
+
+    ansA.value = it?.aText || '';
+    ansB.value = it?.bText || '';
+
+    picks.a = it?.aPick || null;
+    picks.b = it?.bPick || null;
+
+    summaryBox.textContent = it?.final || '（建议：先 3-2-1 表态选 A/B/C，再补充几句，然后再生成综合答案。）';
+
+    renderPickButtons();
     updateProgress();
   }
 
@@ -357,38 +451,78 @@
   function next(){ if(idx < list.length-1){ idx++; setCurrent(list[idx]); } }
   function prev(){ if(idx > 0){ idx--; setCurrent(list[idx]); } }
 
+  function renderPickButtons(){
+    const mk = (container, key)=>{
+      container.innerHTML = '';
+      ['A','B','C'].forEach(L=>{
+        const b = document.createElement('button');
+        b.className = 'pickBtn' + (picks[key]===L ? ' active' : '');
+        b.type = 'button';
+        b.textContent = L;
+        b.onclick = ()=>{ picks[key]=L; renderPickButtons(); };
+        container.appendChild(b);
+      });
+    };
+    mk(pickAEl,'a');
+    mk(pickBEl,'b');
+  }
+
   function normalizeLines(s){
     return String(s||'').trim().replace(/\r\n/g,'\n').replace(/\n{3,}/g,'\n\n');
   }
 
-  function bulletsFromText(s){
-    const t = normalizeLines(s);
-    if(!t) return [];
-    const raw = t
-      .split(/\n|[。！？!?；;]+/)
-      .map(x=>x.trim())
-      .filter(Boolean);
-    return raw.slice(0, 6);
+  function optionText(L){
+    if(L==='A') return normalizeLines(optA.value);
+    if(L==='B') return normalizeLines(optB.value);
+    if(L==='C') return normalizeLines(optC.value);
+    return '';
   }
 
-  function genSummary(){
-    const a = bulletsFromText(ansA.value);
-    const b = bulletsFromText(ansB.value);
-    if(!a.length && !b.length){
-      summaryBox.textContent = '（先写 A / B 再生成）';
-      return;
-    }
+  function genFinal(){
+    if(!current) return;
+    const aPick = picks.a;
+    const bPick = picks.b;
+
+    const aOpt = aPick ? optionText(aPick) : '';
+    const bOpt = bPick ? optionText(bPick) : '';
 
     const out = [];
-    out.push('综合方案（草案）');
+    out.push('综合答案（草案）');
     out.push('');
-    if(a.length){ out.push('A 关键点：'); a.forEach(x=>out.push(`- ${x}`)); out.push(''); }
-    if(b.length){ out.push('B 关键点：'); b.forEach(x=>out.push(`- ${x}`)); out.push(''); }
 
-    out.push('我们可以这样合并：');
-    out.push('- 先对齐共同目标：把“感受/需求”说清楚，再谈“具体安排”。');
-    out.push('- 先选 1 个最小可执行动作（48小时内），验证可行性。');
-    out.push('- 对冲突点设一个边界句 + 一个备选方案（避免拉扯）。');
+    if(aPick){ out.push(`我选择：${aPick}${aOpt ? ` — ${aOpt}`:''}`); }
+    if(bPick){ out.push(`TA 选择：${bPick}${bOpt ? ` — ${bOpt}`:''}`); }
+    if(aPick || bPick) out.push('');
+
+    if(aPick && bPick && aPick===bPick){
+      out.push('共同点：');
+      out.push('- 你们第一反应一致，可以直接进入“如何落地”。');
+      out.push('');
+    } else if(aPick && bPick){
+      out.push('分歧点：');
+      out.push('- 你们的第一表态不同，建议先对齐底层需求（安全感/自由/确定性/被看见）。');
+      out.push('');
+    }
+
+    const aTxt = normalizeLines(ansA.value);
+    const bTxt = normalizeLines(ansB.value);
+
+    if(aTxt){
+      out.push('我补充：');
+      out.push(aTxt);
+      out.push('');
+    }
+    if(bTxt){
+      out.push('TA 补充：');
+      out.push(bTxt);
+      out.push('');
+    }
+
+    out.push('我们最终可以这样写（你可直接改）：');
+    out.push('- 共同目标：____');
+    out.push('- 具体做法：____');
+    out.push('- 边界/例外：____');
+    out.push('- 复盘点：下次我们如何验证是否更舒服？');
 
     summaryBox.textContent = out.join('\n');
   }
@@ -401,9 +535,14 @@
       qid: current.id,
       topic: current.topic,
       text: current.text,
-      a: normalizeLines(ansA.value),
-      b: normalizeLines(ansB.value),
-      summary: normalizeLines(summaryBox.textContent),
+      optA: normalizeLines(optA.value),
+      optB: normalizeLines(optB.value),
+      optC: normalizeLines(optC.value),
+      aPick: picks.a,
+      bPick: picks.b,
+      aText: normalizeLines(ansA.value),
+      bText: normalizeLines(ansB.value),
+      final: normalizeLines(summaryBox.textContent),
       ts: Date.now(),
     };
     sess.items[current.id] = payload;
@@ -423,11 +562,11 @@
     const items = sess.items || {};
     overviewList.innerHTML = list.map((q, k)=>{
       const done = Boolean(items[q.id]);
-      const badge = done ? '<span class="badge">已填写</span>' : '<span class="badge">未填写</span>';
+      const badge = done ? '<span class="badge">已保存</span>' : '<span class="badge">未保存</span>';
       return `
         <div class="item" data-k="${k}">
           <div class="t">${escapeHtml(q.topic||'—')} ${badge}</div>
-          <div class="m">${escapeHtml(short(q.text||'', 70))}</div>
+          <div class="m">${escapeHtml(short(q.text||'', 78))}</div>
         </div>
       `;
     }).join('');
@@ -444,6 +583,64 @@
     });
 
     overviewDlg.showModal();
+  }
+
+  function exportMarkdown(){
+    const m = loadMeta();
+    const sess = loadSession();
+    const items = sess.items || {};
+
+    const lines=[];
+    lines.push('# Love Spinner 导出');
+    lines.push('');
+    lines.push(`- 导出时间：${new Date().toISOString()}`);
+    if(m.whoA || m.whoB) lines.push(`- 填报人：${m.whoA||'我'} / ${m.whoB||'TA'}`);
+    if(m.date) lines.push(`- 日期：${m.date}`);
+    if(m.title) lines.push(`- 主题：${m.title}`);
+    lines.push('');
+
+    list.forEach((q, k)=>{
+      const it = items[q.id];
+      if(!it) return;
+      lines.push(`## ${k+1}. ${it.topic||''}｜${it.text||''}`.trim());
+      lines.push('');
+      lines.push('**选项库（本题）**');
+      lines.push(`- A：${it.optA||''}`);
+      lines.push(`- B：${it.optB||''}`);
+      lines.push(`- C：${it.optC||''}`);
+      lines.push('');
+      lines.push(`- 我表态：${it.aPick||''}`);
+      lines.push(`- TA表态：${it.bPick||''}`);
+      if(it.aText){
+        lines.push('');
+        lines.push('**我补充**');
+        lines.push(it.aText);
+      }
+      if(it.bText){
+        lines.push('');
+        lines.push('**TA补充**');
+        lines.push(it.bText);
+      }
+      lines.push('');
+      lines.push('**综合答案（最终版）**');
+      lines.push('');
+      lines.push(it.final || '');
+      lines.push('');
+    });
+
+    download(`love-spinner_${(m.date||new Date().toISOString().slice(0,10))}.md`, lines.join('\n'), 'text/markdown');
+  }
+
+  function download(filename, text, mime){
+    const blob = new Blob([text], {type: mime||'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url), 800);
   }
 
   // Voice input (Web Speech API)
@@ -518,24 +715,71 @@
     bank = await r.json();
     setTopicOptions();
     buildList();
+    applyMeta();
+
+    // set default date if empty
+    const m = loadMeta();
+    if(!m.date){
+      const d = new Date();
+      const local = new Date(d.getTime() - d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      m.date = local;
+      saveMeta(m);
+      applyMeta();
+    }
   }
 
+  // Events
   topicSel.onchange = ()=>buildList();
   spinBtn.onclick = ()=>buildList();
   nextBtn.onclick = ()=>next();
   prevBtn.onclick = ()=>prev();
 
-  genBtn.onclick = ()=>genSummary();
+  genBtn.onclick = ()=>genFinal();
   saveBtn.onclick = ()=>save();
 
   overviewBtn.onclick = ()=>openOverview();
   closeOverview.onclick = ()=>overviewDlg.close();
+
+  exportMdBtn.onclick = ()=>exportMarkdown();
+
+  setupBtn.onclick = ()=>{
+    const m = loadMeta();
+    whoA.value = m.whoA || '';
+    whoB.value = m.whoB || '';
+    sessDate.value = m.date || '';
+    sessTitle.value = m.title || '';
+    setupDlg.showModal();
+  };
+  closeSetup.onclick = ()=>setupDlg.close();
+  saveSetupBtn.onclick = ()=>{
+    const m = loadMeta();
+    m.whoA = String(whoA.value||'').trim();
+    m.whoB = String(whoB.value||'').trim();
+    m.date = String(sessDate.value||'').trim();
+    m.title = String(sessTitle.value||'').trim();
+    saveMeta(m);
+    applyMeta();
+    toast('已保存填报信息');
+    setupDlg.close();
+  };
+
+  clearAllBtn.onclick = ()=>{
+    if(!confirm('确定清空全部本地记录？（仅清空当前浏览器）')) return;
+    localStorage.removeItem(LS_KEY);
+    toast('已清空');
+    updateProgress();
+  };
 
   document.addEventListener('keydown', (e)=>{
     if(e.key==='ArrowRight') next();
     if(e.key==='ArrowLeft') prev();
     if(e.key==='Enter' && (e.metaKey || e.ctrlKey)) save();
   });
+
+  // pick buttons need to rerender when options edited (optional)
+  optA.addEventListener('input', ()=>{});
+  optB.addEventListener('input', ()=>{});
+  optC.addEventListener('input', ()=>{});
 
   wireMic(micA, ansA);
   wireMic(micB, ansB);
