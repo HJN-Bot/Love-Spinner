@@ -41,12 +41,20 @@
 
     header{
       display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+      flex-wrap: wrap;
       padding:16px 16px;
       border:1px solid var(--border);
       border-radius: var(--radius);
       background: rgba(255,255,255,0.68);
       backdrop-filter: blur(10px);
       box-shadow: var(--shadow);
+    }
+    header > div:first-child{flex: 1 1 420px; min-width: 280px;}
+    .topRight{flex: 0 0 auto; min-width: min(520px, 100%);}
+    @media(max-width: 720px){
+      .topRight{width:100%; align-items:stretch;}
+      .row{justify-content:flex-start;}
+      .progressWrap{width:100%;}
     }
     .brand{display:flex;align-items:center;gap:10px;}
     .heart{width:10px;height:10px;border-radius:99px;background:linear-gradient(135deg,var(--rose),var(--rose2));box-shadow:0 0 0 8px rgba(198,122,134,0.10);} 
@@ -178,15 +186,15 @@
         <div class="opts">
           <div class="optBox">
             <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">A</span><b>选项 A</b></div></div>
-            <textarea id="optA" placeholder="填你们的选项A（一句话即可）"></textarea>
+            <textarea id="optA" placeholder="填选项A（建议10~15字，更具体一点）"></textarea>
           </div>
           <div class="optBox">
             <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">B</span><b>选项 B</b></div></div>
-            <textarea id="optB" placeholder="填你们的选项B（一句话即可）"></textarea>
+            <textarea id="optB" placeholder="填选项B（建议10~15字，更具体一点）"></textarea>
           </div>
           <div class="optBox">
             <div class="optTop"><div style="display:flex;align-items:center;gap:10px"><span class="tag">C</span><b>选项 C</b></div></div>
-            <textarea id="optC" placeholder="填你们的选项C（一句话即可）"></textarea>
+            <textarea id="optC" placeholder="填选项C（建议10~15字，更具体一点）"></textarea>
           </div>
         </div>
 
