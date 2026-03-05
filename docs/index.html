@@ -83,6 +83,11 @@
     .bar{height:10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.55);overflow:hidden}
     .fill{height:100%;width:0%;background:linear-gradient(90deg, rgba(198,122,134,0.58), rgba(232,183,167,0.70));}
 
+    .sparkle{position:absolute;right:-6px;top:-18px;font-size:16px;opacity:0;transform:translateY(6px) scale(.8);filter:drop-shadow(0 6px 10px rgba(0,0,0,0.15));}
+    .sparkle.on{animation:spark 900ms cubic-bezier(.2,.8,.2,1) forwards;}
+    @keyframes spark{0%{opacity:0;transform:translateY(10px) scale(.7) rotate(-8deg);}35%{opacity:1;transform:translateY(-4px) scale(1.08) rotate(6deg);}70%{opacity:1;transform:translateY(-10px) scale(1.0) rotate(-2deg);}100%{opacity:0;transform:translateY(-16px) scale(.9) rotate(0deg);}}
+    .progressWrap{position:relative}
+
     .panel{ margin-top:14px; border:1px solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow); overflow:hidden; }
     .panelH{ padding:14px 16px; border-bottom: 1px solid rgba(36,28,25,0.08); display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap; }
     .panelH .left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -163,6 +168,7 @@
         <div class="progressWrap">
           <div class="progressTop"><span id="progressText">0 / 0</span><span id="topicText">—</span></div>
           <div class="bar"><div class="fill" id="progressFill"></div></div>
+          <div id="sparkle" class="sparkle">✨</div>
         </div>
       </div>
     </header>
@@ -342,12 +348,23 @@
   let idx = 0;
   let current = null;
   let picks = { a:null, b:null };
+  let lastAnswered = 0;
 
   function toast(msg){
     toastEl.textContent = msg;
     toastEl.classList.add('show');
     setTimeout(()=>toastEl.classList.remove('show'), 1200);
   }
+
+  function triggerSparkle(){
+    const sp = document.getElementById('sparkle');
+    if(!sp) return;
+    sp.classList.remove('on');
+    // force reflow
+    void sp.offsetWidth;
+    sp.classList.add('on');
+  }
+
 
   function loadSession(){
     try{ return JSON.parse(localStorage.getItem(LS_KEY) || '{"items":{}}'); }
@@ -454,6 +471,12 @@
     progressText.textContent = `${Math.min(answered, total)} / ${total}`;
     const pct = total ? Math.min(100, Math.round((answered/total)*100)) : 0;
     progressFill.style.width = pct + '%';
+
+    if(answered > lastAnswered){
+      triggerSparkle();
+      lastAnswered = answered;
+    }
+    if(!lastAnswered) lastAnswered = answered;
   }
 
   function next(){ if(idx < list.length-1){ idx++; setCurrent(list[idx]); } }
