@@ -92,7 +92,37 @@
     .panelH{ padding:14px 16px; border-bottom: 1px solid rgba(36,28,25,0.08); display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap; }
     .panelH .left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(36,28,25,0.10);background:rgba(255,255,255,0.60);font-size:12px;color:var(--muted)}
-    .panelB{padding:16px}
+    .panelB{padding:16px; position:relative;}
+
+    /* Motion v1 (B+C): transitions & micro-interactions (no over-effect) */
+    .panelB.motion{ will-change: transform, opacity; }
+    .panelB.slide-out-left{ animation: slideOutLeft 220ms cubic-bezier(.2,.8,.2,1) forwards; }
+    .panelB.slide-in-right{ animation: slideInRight 280ms cubic-bezier(.2,.8,.2,1) forwards; }
+    .panelB.slide-out-right{ animation: slideOutRight 220ms cubic-bezier(.2,.8,.2,1) forwards; }
+    .panelB.slide-in-left{ animation: slideInLeft 280ms cubic-bezier(.2,.8,.2,1) forwards; }
+
+    @keyframes slideOutLeft{ to{ opacity:0; transform: translateX(-14px); } }
+    @keyframes slideInRight{ from{ opacity:0; transform: translateX(16px); } to{ opacity:1; transform: translateX(0); } }
+    @keyframes slideOutRight{ to{ opacity:0; transform: translateX(14px); } }
+    @keyframes slideInLeft{ from{ opacity:0; transform: translateX(-16px); } to{ opacity:1; transform: translateX(0); } }
+
+    @media (prefers-reduced-motion: reduce){
+      .panelB.slide-out-left,.panelB.slide-in-right,.panelB.slide-out-right,.panelB.slide-in-left{ animation:none !important; }
+    }
+
+    /* Option box micro */
+    .optBox{ transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease; }
+    .optBox:hover{ transform: translateY(-1px); box-shadow: 0 16px 42px rgba(0,0,0,0.10); border-color: rgba(198,122,134,0.22); }
+    .optBox:active{ transform: translateY(0px) scale(0.995); }
+
+    button{ transition: transform 120ms ease, box-shadow 120ms ease, background 120ms ease; }
+    button.primary:hover{ box-shadow: 0 14px 36px rgba(198,122,134,0.18); transform: translateY(-1px); }
+    button.primary:active{ transform: translateY(0) scale(0.99); }
+
+    .pickBtn{ transition: transform 120ms ease, box-shadow 120ms ease; }
+    .pickBtn:hover{ transform: translateY(-1px); }
+    .pickBtn:active{ transform: translateY(0) scale(0.99); }
+    .pickBtn.active{ box-shadow: 0 12px 30px rgba(198,122,134,0.14); }
 
     .q{ text-align:center; font-size: var(--q); font-weight: 980; line-height: 1.2; letter-spacing:-0.012em; margin: 10px 0 0; }
     .qMeta{margin-top:10px;color:var(--muted2);font-size:var(--small)}
@@ -185,7 +215,7 @@
           <button id="nextBtn" class="primary">下一题</button>
         </div>
       </div>
-      <div class="panelB">
+      <div class="panelB motion" id="panelBody">
         <div class="q" id="qText">加载题库中…</div>
         <div class="qMeta" id="qHint">—</div>
 
@@ -479,8 +509,37 @@
     if(!lastAnswered) lastAnswered = answered;
   }
 
-  function next(){ if(idx < list.length-1){ idx++; setCurrent(list[idx]); } }
-  function prev(){ if(idx > 0){ idx--; setCurrent(list[idx]); } }
+  function animateTo(newIdx, dir){
+    if(newIdx<0 || newIdx>=list.length) return;
+    const body = el('panelBody');
+    const outCls = (dir==='next') ? 'slide-out-left' : 'slide-out-right';
+    const inCls  = (dir==='next') ? 'slide-in-right' : 'slide-in-left';
+
+    prevBtn.disabled = true; nextBtn.disabled = true;
+
+    const doIn = ()=>{
+      try{ body.classList.remove(outCls); }catch{}
+      setCurrent(list[newIdx]);
+      idx = newIdx;
+      try{ body.classList.add(inCls); }catch{}
+
+      const finish = ()=>{
+        try{ body.classList.remove(inCls); }catch{}
+        prevBtn.disabled = false; nextBtn.disabled = false;
+        body.removeEventListener('animationend', finish);
+      };
+      body.addEventListener('animationend', finish);
+      setTimeout(finish, 360);
+    };
+
+    try{ body.classList.add(outCls); }catch{}
+    const finishOut = ()=>{ body.removeEventListener('animationend', finishOut); doIn(); };
+    body.addEventListener('animationend', finishOut);
+    setTimeout(finishOut, 260);
+  }
+
+  function next(){ if(idx < list.length-1){ animateTo(idx+1, 'next'); } }
+  function prev(){ if(idx > 0){ animateTo(idx-1, 'prev'); } }
 
   function renderPickButtons(){
     const mk = (container, key)=>{
