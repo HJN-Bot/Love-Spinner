@@ -871,20 +871,20 @@
   }
 
   // Events
-  topicSel.onchange = ()=>buildList();
-  spinBtn.onclick = ()=>buildList();
-  nextBtn.onclick = ()=>next();
-  prevBtn.onclick = ()=>prev();
+  if(topicSel) topicSel.onchange = ()=>buildList();
+  if(spinBtn) spinBtn.onclick = ()=>buildList();
+  if(nextBtn) nextBtn.onclick = ()=>next();
+  if(prevBtn) prevBtn.onclick = ()=>prev();
 
-  genBtn.onclick = ()=>genFinal();
-  saveBtn.onclick = ()=>save();
+  if(genBtn) genBtn.onclick = ()=>genFinal();
+  if(saveBtn) saveBtn.onclick = ()=>save();
 
-  overviewBtn.onclick = ()=>openOverview();
-  closeOverview.onclick = ()=>overviewDlg.close();
+  if(overviewBtn) overviewBtn.onclick = ()=>openOverview();
+  if(closeOverview) closeOverview.onclick = ()=>overviewDlg.close();
 
-  exportMdBtn.onclick = ()=>exportMarkdown();
+  if(exportMdBtn) exportMdBtn.onclick = ()=>exportMarkdown();
 
-  setupBtn.onclick = ()=>{
+  if(setupBtn) setupBtn.onclick = ()=>{
     const m = loadMeta();
     whoA.value = m.whoA || '';
     whoB.value = m.whoB || '';
@@ -892,8 +892,8 @@
     sessTitle.value = m.title || '';
     setupDlg.showModal();
   };
-  closeSetup.onclick = ()=>setupDlg.close();
-  saveSetupBtn.onclick = ()=>{
+  if(closeSetup) closeSetup.onclick = ()=>setupDlg.close();
+  if(saveSetupBtn) saveSetupBtn.onclick = ()=>{
     const m = loadMeta();
     m.whoA = String(whoA.value||'').trim();
     m.whoB = String(whoB.value||'').trim();
@@ -905,7 +905,7 @@
     setupDlg.close();
   };
 
-  clearAllBtn.onclick = ()=>{
+  if(clearAllBtn) clearAllBtn.onclick = ()=>{
     if(!confirm('确定清空全部本地记录？（仅清空当前浏览器）')) return;
     localStorage.removeItem(LS_KEY);
     toast('已清空');
