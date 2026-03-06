@@ -831,6 +831,7 @@
     }
 
     console.log('[LoveSpinner] bank loaded:', Array.isArray(bank)?bank.length:'?');
+    try{ qHint.textContent = '题库已加载：' + (Array.isArray(bank)?bank.length:'?') + ' 题'; }catch{}
 
     setTopicOptions();
     buildList();
@@ -904,7 +905,9 @@
   wireMic(micB, ansB);
 
   init().catch(err=>{
-    qText.textContent = '题库加载失败。请刷新或重新打开页面。'; toast('题库加载失败（可尝试刷新）');
+    qText.textContent = '题库加载失败。请刷新或重新打开页面。';
+    try{ qHint.textContent = String(err && err.message ? err.message : err); }catch{}
+    toast('题库加载失败（可尝试刷新）');
     console.error(err);
   });
 </script>
