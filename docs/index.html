@@ -802,7 +802,10 @@
   }
 
   async function init(){
-    const r = await fetch(BANK_URL, { cache: 'no-store' });
+    const ctrl = new AbortController();
+    const t = setTimeout(()=>ctrl.abort(), 8000);
+    const r = await fetch(BANK_URL, { cache: 'no-store', credentials: 'include', signal: ctrl.signal });
+    clearTimeout(t);
     if(!r.ok){
       throw new Error('题库请求失败：' + r.status + ' ' + r.statusText);
     }
@@ -888,7 +891,7 @@
   wireMic(micB, ansB);
 
   init().catch(err=>{
-    qText.textContent = '题库加载失败。';
+    qText.textContent = '题库加载失败。请刷新或重新打开页面。'; toast('题库加载失败（可尝试刷新）');
     console.error(err);
   });
 </script>
