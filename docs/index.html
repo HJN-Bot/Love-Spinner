@@ -803,7 +803,19 @@
 
   async function init(){
     const r = await fetch(BANK_URL, { cache: 'no-store' });
-    bank = await r.json();
+    if(!r.ok){
+      throw new Error('题库请求失败：' + r.status + ' ' + r.statusText);
+    }
+    const txt = await r.text();
+    try{
+      bank = JSON.parse(txt);
+    }catch(e){
+      throw new Error('题库 JSON 解析失败：' + String(e) + ' | 前100字=' + txt.slice(0,100));
+    }
+
+    // debug: show size in console
+    console.log('[LoveSpinner] bank loaded:', Array.isArray(bank)?bank.length:'?');
+
     setTopicOptions();
     buildList();
     applyMeta();
